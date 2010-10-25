@@ -24,18 +24,29 @@ import java.io.IOException;
 
 public class Config {
     
+    /**
+     * Get the value of a configuration variable
+     * @param line  A configuration file line
+     * @param varName The configuration variable searched for
+     * @return The value of the configuration variable if it matches the variable in the current file line, null otherwise
+     */
     private static String getConfigValue(String line, String varName) {
         
-        if (line.indexOf(varName) != -1) {
+        String retVal = null;
+        
+        if (line.indexOf("=") != -1) {
             
-            int rValStart = line.indexOf("=");
+            String [] equation = line.split("=");
             
-            if (rValStart > line.indexOf(varName)) {
-                return line.substring(rValStart + 1).trim();
+            String lValue = equation[0].trim();
+            String rValue = line.substring(line.indexOf("=") + 1).trim();
+                
+            if (varName.equals(lValue)) {
+                retVal = rValue;
             }
         }
         
-        return null;
+        return retVal;
         
     }
     
