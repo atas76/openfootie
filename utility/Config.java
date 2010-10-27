@@ -64,7 +64,6 @@ public class Config {
                 if (value != null) break;
             }
 
-            // dispose all the resources after using them.
             in.close();
             
             return value;

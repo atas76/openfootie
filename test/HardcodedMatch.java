@@ -1,3 +1,20 @@
+/*
+ * Copyright 2010 Andreas Tasoulas
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at 
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0 
+ * 
+ * Unless required by applicable law or agreed to in writing, software 
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
+ *  
+ */
+
 package test;
 
 import gameplay.Player;
@@ -8,6 +25,7 @@ import interactivity.Signal;
 
 import java.util.ArrayList;
 
+import test.exceptions.InvalidPosValueException;
 import utility.Tactics;
 import core.Match;
 import core.MatchReport;
@@ -16,23 +34,6 @@ import core.Team;
 public class HardcodedMatch {
     
     private static final double EXCELLENT = 6d;
-    
-    private static Tactics.TacticLine db2enum(int pos) {
-        
-        switch (pos) {
-        case 1:
-            return Tactics.TacticLine.GK;
-        case 2:
-            return Tactics.TacticLine.DEFENDER;
-        case 3:
-            return Tactics.TacticLine.MIDFIELDER;
-        case 4:
-            return Tactics.TacticLine.FORWARD;
-        }
-        
-        return null;
-        
-    }
     
     public static void main(String[] args) {
         
@@ -64,7 +65,12 @@ public class HardcodedMatch {
                 currentPlayer.addSkill(attr.getName(), EXCELLENT);
             }
             
-            homeTeam.addPlayer(currentPlayer, db2enum(currentPlayer.getPosition()));
+            try {
+                homeTeam.addPlayer(currentPlayer, MatchUtil.db2enum(currentPlayer.getPosition()));
+            } catch (InvalidPosValueException idvex) {
+                System.out.println(currentPlayer.getFamilyName() + " : " + idvex.getMessage());
+                return;
+            }
         }
         
         /*
@@ -91,7 +97,13 @@ public class HardcodedMatch {
                 currentPlayer.addSkill(attr.getName(), EXCELLENT);
             }
             
-            awayTeam.addPlayer(currentPlayer, db2enum(currentPlayer.getPosition()));
+            try {    
+                awayTeam.addPlayer(currentPlayer, MatchUtil.db2enum(currentPlayer.getPosition()));
+            } catch (InvalidPosValueException idvex) {
+                System.out.println(currentPlayer.getFamilyName() + " : " + idvex.getMessage());
+                return;
+            }
+            
         }
         
         homeTeam.alignPlayersDesktop();

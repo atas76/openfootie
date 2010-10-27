@@ -32,8 +32,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Random;
 
+import test.exceptions.InvalidPosValueException;
 import utility.Config;
-import utility.Tactics;
 import core.Constants;
 import core.Match;
 import core.MatchReport;
@@ -138,7 +138,12 @@ public class PrepareMatch {
                     player.addSkill(attr.getName(), homeSquadRS.getDouble(attr.getName()));
                 }
                 
-                homeTeam.addPlayer(player, db2enum(position));
+                try {
+                    homeTeam.addPlayer(player, MatchUtil.db2enum(player.getPosition()));
+                } catch (InvalidPosValueException idvex) {
+                    System.out.println(player.getFamilyName() + " : " + idvex.getMessage());
+                    return;
+                }
             }
             
             while (awaySquadRS.next()) {
@@ -154,7 +159,12 @@ public class PrepareMatch {
                     player.addSkill(attr.getName(), awaySquadRS.getDouble(attr.getName()));
                 }
                 
-                awayTeam.addPlayer(player, db2enum(position));
+                try {
+                    awayTeam.addPlayer(player, MatchUtil.db2enum(player.getPosition()));
+                } catch (InvalidPosValueException idvex) {
+                    System.out.println(player.getFamilyName() + " : " + idvex.getMessage());
+                    return;
+                }
             }
             
             // homeTeam.defineTactics();
@@ -342,28 +352,6 @@ public class PrepareMatch {
             
             System.out.println();
         }
-        
-    }
-    
-    /**
-     * Utility: Transform player position as read from database to the corresponding enum value
-     * @param pos
-     * @return
-     */
-    private static Tactics.TacticLine db2enum(int pos) {
-        
-        switch (pos) {
-        case 1:
-            return Tactics.TacticLine.GK;
-        case 2:
-            return Tactics.TacticLine.DEFENDER;
-        case 3:
-            return Tactics.TacticLine.MIDFIELDER;
-        case 4:
-            return Tactics.TacticLine.FORWARD;
-        }
-        
-        return null;
         
     }
 
