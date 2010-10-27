@@ -20,6 +20,7 @@ package test;
 import gameplay.Player;
 import gameplay.PlayerAttribute;
 import gameplay.PlayerAttributes;
+
 import interactivity.EndOfMatch;
 import interactivity.Signal;
 
@@ -62,6 +63,7 @@ public class PrepareMatch {
         
         DATABASE_ADDRESS = Config.readConfig("database");
         
+        // Attention! This is code is vulnerable to SQL Injection. Don't use it as is in a web app.
         String HOME_TEAM_QUERY = "select * from Team where Id=" + homeTeamId;
         String AWAY_TEAM_QUERY = "select * from Team where Id=" + awayTeamId;
         
@@ -79,11 +81,6 @@ public class PrepareMatch {
         Statement awaySquadStmt = null;
         
         try {
-            
-            // boiler-plate JDBC housekeeping
-            // InitialContext ctx = new InitialContext();
-            // Context envCtx = (Context) ctx.lookup("java:comp/env");
-            // DataSource ds = (DataSource) envCtx.lookup("jdbc/MySQLDB");
             
             ResultSet homeTeamRS = null;
             ResultSet awayTeamRS = null;
@@ -160,8 +157,8 @@ public class PrepareMatch {
                 awayTeam.addPlayer(player, db2enum(position));
             }
             
-            homeTeam.defineTactics();
-            awayTeam.defineTactics();
+            // homeTeam.defineTactics();
+            // awayTeam.defineTactics();
             
             homeTeam.alignPlayersDesktop();
             awayTeam.alignPlayersDesktop();
