@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<project name = "openfootieman" basedir="." default="build">
+
+<property name = "bin" value = "classes"/>
+<property name = "projecturi" value = "com/openfootie"/>
+
+<target name = "compile">
+	
+	<mkdir dir="${bin}"/>
+
+	<javac srcdir = "." destdir="${bin}">
+		<include name="core/MatchReport.java"/>
+		<include name="gameplay/Player.java"/>
+		<include name="core/State.java"/>
+		<include name="${projecturi}/core/MatchReport.java"/>
+		<include name="${projecturi}/gameplay/Player.java"/>
+		<include name="${projecturi}/core/State.java"/>
+	</javac>
+
+	<javac srcdir = "report" destdir = "${bin}"/>
+	<javac srcdir = "${projecturi}/report" destdir = "${bin}"/>
+
+	<javac srcdir = "utility" destdir = "${bin}"/>
+	<javac srcdir = "${projecturi}/utility" destdir = "${bin}"/>
+
+	<javac srcdir = "interactivity" destdir = "${bin}"/>
+	<javac srcdir = "${projecturi}/interactivity" destdir = "${bin}"/>
+
+	<javac srcdir = "core" destdir = "${bin}">
+		<include name="Constants.java"/>
+		<include name="Player.java"/>
+		<include name="Team.java"/>
+		<include name="HighLightOrdinal.java"/>
+		<include name="PlayerStats.java"/>
+		<include name="${projecturi}/Constants.java"/>
+		<include name="${projecturi}/Player.java"/>
+		<include name="${projecturi}/Team.java"/>
+		<include name="${projecturi}/HighLightOrdinal.java"/>
+		<include name="${projecturi}/PlayerStats.java"/>
+	</javac>
+
+	<javac srcdir = "gameplay" destdir = "${bin}"/>
+	<javac srcdir = "${projecturi}/gameplay" destdir = "${bin}"/>
+	
+	<javac srcdir = "representation" destdir = "${bin}"/>
+	<javac srcdir = "${projecturi}/representation" destdir = "${bin}"/>
+
+	<javac srcdir = "core" destdir = "${bin}"/>
+	<javac srcdir = "${projecturi}/core" destdir = "${bin}"/>
+
+	<javac srcdir = "test" destdir = "${bin}"/>
+	<javac srcdir = "${projecturi}/test" destdir = "${bin}"/>
+
+</target>
+
+<target name="create-jar">
+	<manifest file="Manifest.txt">
+		<attribute name="Main-Class" value="com.openfootie.test.HardcodedMatch"/>
+	</manifest>
+	<jar destfile="OpenFootie.jar" manifest="Manifest.txt" basedir="classes"/>
+</target>
+
+<target name="build" depends="compile,create-jar"/>
+
+</project>
